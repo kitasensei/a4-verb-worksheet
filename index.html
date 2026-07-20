@@ -36,13 +36,15 @@
       margin: 0 auto 12px;
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 8px 12px;
       align-items: center;
       font-family: sans-serif;
       font-weight: 400;
     }
 
-    .toolbar label { font-size: 14px; }
+    .toolbar label {
+      font-size: 14px;
+    }
 
     .toolbar select,
     .toolbar button {
@@ -55,6 +57,19 @@
     }
 
     .toolbar button { cursor: pointer; }
+
+    .answer-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      user-select: none;
+    }
+
+    .answer-toggle input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
 
     .status {
       width: 100%;
@@ -135,14 +150,15 @@
       overflow: hidden;
     }
 
-    th, .fixed {
+    th {
       text-align: center;
       font-weight: 500;
     }
 
     .group-header { height: 10.2mm; }
 
-    .auto {
+    .auto,
+    .answer-cell {
       text-align: left;
       white-space: nowrap;
       font-weight: 500;
@@ -186,6 +202,12 @@
   <div class="toolbar">
     <label for="worksheetSelect">教材：</label>
     <select id="worksheetSelect" aria-label="教材を選択"></select>
+
+    <label class="answer-toggle">
+      <input type="checkbox" id="showAnswers">
+      <span>答えを印刷する</span>
+    </label>
+
     <button type="button" id="printButton">印刷</button>
     <span class="status" id="status">教材一覧を読み込み中…</span>
   </div>
@@ -206,30 +228,45 @@
           <col class="prompt"><col class="answer">
         </colgroup>
         <tbody>
-          <tr><th colspan="2" class="group-header">Ⅰグループ</th><th colspan="2" class="group-header">Ⅱグループ</th></tr>
-          <tr><td class="auto" data-key="01"></td><td class="auto" data-key="02"></td><td class="auto" data-key="03"></td><td class="auto" data-key="04"></td></tr>
-          <tr><td class="auto" data-key="05"></td><td></td><td class="auto" data-key="27"></td><td></td></tr>
-          <tr><td class="auto" data-key="06"></td><td></td><td class="auto" data-key="28"></td><td></td></tr>
-          <tr><td class="auto" data-key="07"></td><td></td><td class="auto" data-key="29"></td><td></td></tr>
-          <tr><td class="auto" data-key="08"></td><td></td><td class="auto" data-key="30"></td><td></td></tr>
-          <tr><td class="auto" data-key="09"></td><td></td><td class="auto" data-key="31"></td><td></td></tr>
-          <tr><td class="auto" data-key="10"></td><td></td><td class="auto" data-key="32"></td><td></td></tr>
-          <tr><td class="auto" data-key="11"></td><td></td><td class="auto" data-key="33"></td><td></td></tr>
-          <tr><td class="auto" data-key="12"></td><td></td><td class="auto" data-key="34"></td><td></td></tr>
-          <tr><td class="auto" data-key="13"></td><td></td><td class="auto" data-key="35"></td><td></td></tr>
-          <tr><td class="auto" data-key="14"></td><td></td><td class="auto" data-key="36"></td><td></td></tr>
-          <tr><td class="auto" data-key="15"></td><td></td><th colspan="2" class="group-header">Ⅲグループ</th></tr>
-          <tr><td class="auto" data-key="16"></td><td></td><td class="auto" data-key="37"></td><td></td></tr>
-          <tr><td class="auto" data-key="17"></td><td></td><td class="auto" data-key="38"></td><td></td></tr>
-          <tr><td class="auto" data-key="18"></td><td></td><td class="auto" data-key="39"></td><td></td></tr>
-          <tr><td class="auto" data-key="19"></td><td></td><td class="auto" data-key="40"></td><td></td></tr>
-          <tr><td class="auto" data-key="20"></td><td></td><td class="auto" data-key="41"></td><td></td></tr>
-          <tr><td class="auto" data-key="21"></td><td></td><td class="auto" data-key="42"></td><td></td></tr>
-          <tr><td class="auto" data-key="22"></td><td></td><td class="auto" data-key="43"></td><td></td></tr>
-          <tr><td class="auto" data-key="23"></td><td></td><td class="auto" data-key="44"></td><td></td></tr>
-          <tr><td class="auto" data-key="24"></td><td></td><td class="auto" data-key="45"></td><td></td></tr>
-          <tr><td class="auto" data-key="25"></td><td></td><td class="auto" data-key="46"></td><td></td></tr>
-          <tr><td class="auto" data-key="26"></td><td></td><td class="auto" data-key="47"></td><td></td></tr>
+          <tr>
+            <th colspan="2" class="group-header">Ⅰグループ</th>
+            <th colspan="2" class="group-header">Ⅱグループ</th>
+          </tr>
+          <tr>
+            <td class="auto" data-key="01"></td>
+            <td class="auto" data-key="02"></td>
+            <td class="auto" data-key="03"></td>
+            <td class="auto" data-key="04"></td>
+          </tr>
+
+          <tr><td class="auto" data-key="05"></td><td class="answer-cell" data-answer-key="answer05"></td><td class="auto" data-key="27"></td><td class="answer-cell" data-answer-key="answer27"></td></tr>
+          <tr><td class="auto" data-key="06"></td><td class="answer-cell" data-answer-key="answer06"></td><td class="auto" data-key="28"></td><td class="answer-cell" data-answer-key="answer28"></td></tr>
+          <tr><td class="auto" data-key="07"></td><td class="answer-cell" data-answer-key="answer07"></td><td class="auto" data-key="29"></td><td class="answer-cell" data-answer-key="answer29"></td></tr>
+          <tr><td class="auto" data-key="08"></td><td class="answer-cell" data-answer-key="answer08"></td><td class="auto" data-key="30"></td><td class="answer-cell" data-answer-key="answer30"></td></tr>
+          <tr><td class="auto" data-key="09"></td><td class="answer-cell" data-answer-key="answer09"></td><td class="auto" data-key="31"></td><td class="answer-cell" data-answer-key="answer31"></td></tr>
+          <tr><td class="auto" data-key="10"></td><td class="answer-cell" data-answer-key="answer10"></td><td class="auto" data-key="32"></td><td class="answer-cell" data-answer-key="answer32"></td></tr>
+          <tr><td class="auto" data-key="11"></td><td class="answer-cell" data-answer-key="answer11"></td><td class="auto" data-key="33"></td><td class="answer-cell" data-answer-key="answer33"></td></tr>
+          <tr><td class="auto" data-key="12"></td><td class="answer-cell" data-answer-key="answer12"></td><td class="auto" data-key="34"></td><td class="answer-cell" data-answer-key="answer34"></td></tr>
+          <tr><td class="auto" data-key="13"></td><td class="answer-cell" data-answer-key="answer13"></td><td class="auto" data-key="35"></td><td class="answer-cell" data-answer-key="answer35"></td></tr>
+          <tr><td class="auto" data-key="14"></td><td class="answer-cell" data-answer-key="answer14"></td><td class="auto" data-key="36"></td><td class="answer-cell" data-answer-key="answer36"></td></tr>
+
+          <tr>
+            <td class="auto" data-key="15"></td>
+            <td class="answer-cell" data-answer-key="answer15"></td>
+            <th colspan="2" class="group-header">Ⅲグループ</th>
+          </tr>
+
+          <tr><td class="auto" data-key="16"></td><td class="answer-cell" data-answer-key="answer16"></td><td class="auto" data-key="37"></td><td class="answer-cell" data-answer-key="answer37"></td></tr>
+          <tr><td class="auto" data-key="17"></td><td class="answer-cell" data-answer-key="answer17"></td><td class="auto" data-key="38"></td><td class="answer-cell" data-answer-key="answer38"></td></tr>
+          <tr><td class="auto" data-key="18"></td><td class="answer-cell" data-answer-key="answer18"></td><td class="auto" data-key="39"></td><td class="answer-cell" data-answer-key="answer39"></td></tr>
+          <tr><td class="auto" data-key="19"></td><td class="answer-cell" data-answer-key="answer19"></td><td class="auto" data-key="40"></td><td class="answer-cell" data-answer-key="answer40"></td></tr>
+          <tr><td class="auto" data-key="20"></td><td class="answer-cell" data-answer-key="answer20"></td><td class="auto" data-key="41"></td><td class="answer-cell" data-answer-key="answer41"></td></tr>
+          <tr><td class="auto" data-key="21"></td><td class="answer-cell" data-answer-key="answer21"></td><td class="auto" data-key="42"></td><td class="answer-cell" data-answer-key="answer42"></td></tr>
+          <tr><td class="auto" data-key="22"></td><td class="answer-cell" data-answer-key="answer22"></td><td class="auto" data-key="43"></td><td class="answer-cell" data-answer-key="answer43"></td></tr>
+          <tr><td class="auto" data-key="23"></td><td class="answer-cell" data-answer-key="answer23"></td><td class="auto" data-key="44"></td><td class="answer-cell" data-answer-key="answer44"></td></tr>
+          <tr><td class="auto" data-key="24"></td><td class="answer-cell" data-answer-key="answer24"></td><td class="auto" data-key="45"></td><td class="answer-cell" data-answer-key="answer45"></td></tr>
+          <tr><td class="auto" data-key="25"></td><td class="answer-cell" data-answer-key="answer25"></td><td class="auto" data-key="46"></td><td class="answer-cell" data-answer-key="answer46"></td></tr>
+          <tr><td class="auto" data-key="26"></td><td class="answer-cell" data-answer-key="answer26"></td><td class="auto" data-key="47"></td><td class="answer-cell" data-answer-key="answer47"></td></tr>
         </tbody>
       </table>
     </main>
@@ -238,9 +275,13 @@
   <script>
     const select = document.getElementById('worksheetSelect');
     const status = document.getElementById('status');
+    const showAnswers = document.getElementById('showAnswers');
+
+    let currentValues = {};
 
     function parseData(text) {
       const values = {};
+
       for (const rawLine of text.split(/\r?\n/)) {
         const line = rawLine.trim();
         if (!line || line.startsWith('#')) continue;
@@ -252,31 +293,47 @@
         }
 
         match = line.match(/^([^:：]+)\s*[:：]\s*(.*)$/);
-        if (match) values[match[1].trim()] = match[2].trim();
+        if (match) {
+          values[match[1].trim()] = match[2].trim();
+        }
       }
+
       return values;
     }
 
-    function fillSheet(values) {
+    function renderSheet() {
       document.querySelectorAll('[data-key]').forEach((element) => {
         const key = element.dataset.key;
-        element.textContent = Object.prototype.hasOwnProperty.call(values, key)
-          ? values[key]
+        element.textContent = Object.prototype.hasOwnProperty.call(currentValues, key)
+          ? currentValues[key]
           : '';
+      });
+
+      document.querySelectorAll('[data-answer-key]').forEach((element) => {
+        const key = element.dataset.answerKey;
+        element.textContent =
+          showAnswers.checked &&
+          Object.prototype.hasOwnProperty.call(currentValues, key)
+            ? currentValues[key]
+            : '';
       });
     }
 
     async function loadWorksheet(filename, label) {
       status.textContent = `${label} を読み込み中…`;
+
       try {
         const response = await fetch(filename, { cache: 'no-store' });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const values = parseData(await response.text());
-        fillSheet(values);
-        document.title = values.title || label;
+
+        currentValues = parseData(await response.text());
+        renderSheet();
+
+        document.title = currentValues.title || label;
         status.textContent = `${label} を読み込みました`;
       } catch (error) {
-        fillSheet({});
+        currentValues = {};
+        renderSheet();
         status.textContent = `${filename} を読み込めませんでした`;
         console.error(error);
       }
@@ -286,6 +343,7 @@
       try {
         const response = await fetch('files.json', { cache: 'no-store' });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
         const files = await response.json();
 
         if (!Array.isArray(files) || files.length === 0) {
@@ -314,11 +372,16 @@
 
     select.addEventListener('change', async () => {
       const option = select.options[select.selectedIndex];
+
       const url = new URL(location.href);
       url.searchParams.set('file', option.value);
       history.replaceState(null, '', url);
+
+      showAnswers.checked = false;
       await loadWorksheet(option.value, option.textContent);
     });
+
+    showAnswers.addEventListener('change', renderSheet);
 
     document.getElementById('printButton')
       .addEventListener('click', () => window.print());
