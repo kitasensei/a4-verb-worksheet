@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>グループ表</title>
+  <style>
+    :root {
+      --page-width: 210mm;
+      --page-height: 297mm;
+      --page-margin: 8mm;
+      --border: 0.35mm solid #000;
+      --font: "UDデジタル教科書体 N-B", "UD Digi Kyokasho N-B", "HG教科書体", "BIZ UDPMincho", "Yu Mincho", serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ececec;
+      color: #000;
+      font-family: var(--font);
+      font-weight: 700;
+    }
+
+    body { padding: 12px; }
+
+    .toolbar {
+      width: calc(var(--page-width) - (var(--page-margin) * 2));
+      margin: 0 auto 10px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-family: sans-serif;
+      font-weight: 400;
+    }
+
+    .toolbar button {
+      border: 1px solid #777;
+      border-radius: 5px;
+      background: #fff;
+      padding: 7px 14px;
+      cursor: pointer;
+    }
+
+    .status { font-size: 13px; }
+
+    .page {
+      width: var(--page-width);
+      min-height: var(--page-height);
+      margin: 0 auto;
+      padding: var(--page-margin);
+      background: #fff;
+      box-shadow: 0 1px 8px rgba(0,0,0,.18);
+      overflow: hidden;
+    }
+
+    .sheet-header {
+      height: 16mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      padding: 0 1mm 2.2mm;
+      font-size: 5.2mm;
+      line-height: 1;
+    }
+
+    .title-value {
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .name-field {
+      justify-self: center;
+      display: flex;
+      align-items: flex-end;
+      gap: 2mm;
+      white-space: nowrap;
+    }
+
+    .name-line {
+      display: inline-block;
+      width: 55mm;
+      height: 7mm;
+      border-bottom: 0.35mm solid #000;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      border: var(--border);
+      font-size: 4.75mm;
+      line-height: 1.05;
+    }
+
+    col.prompt { width: 25%; }
+    col.answer { width: 25%; }
+
+    th, td {
+      border: var(--border);
+      height: 9.7mm;
+      padding: 0 2.2mm;
+      vertical-align: middle;
+      overflow: hidden;
+    }
+
+    th,
+    .fixed {
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .group-header { height: 10.5mm; }
+
+    .auto {
+      text-align: left;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .answer { background: #fff; }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    @media print {
+      html, body { background: #fff; }
+      body { padding: 0; }
+      .toolbar { display: none !important; }
+      .page {
+        width: 210mm;
+        height: 297mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 8mm;
+        box-shadow: none;
+        page-break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar no-print">
+    <button type="button" onclick="window.print()">印刷</button>
+    <span class="status" id="status">data.md を読み込み中…</span>
+  </div>
+
+  <main class="page">
+    <header class="sheet-header">
+      <div class="title-value" data-key="title">{{title}}</div>
+      <div class="name-field"><span>氏名</span><span class="name-line" aria-hidden="true"></span></div>
+    </header>
+
+    <table aria-label="グループ記入表">
+      <colgroup>
+        <col class="prompt"><col class="answer"><col class="prompt"><col class="answer">
+      </colgroup>
+      <tbody>
+        <tr><th colspan="2" class="group-header">Ⅰグループ</th><th colspan="2" class="group-header">Ⅱグループ</th></tr>
+        <tr><td class="auto" data-key="01">{{01}}</td><td class="auto" data-key="02">{{02}}</td><td class="auto" data-key="03">{{03}}</td><td class="auto" data-key="04">{{04}}</td></tr>
+        <tr><td class="auto" data-key="05">{{05}}</td><td class="answer"></td><td class="auto" data-key="27">{{27}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="06">{{06}}</td><td class="answer"></td><td class="auto" data-key="28">{{28}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="07">{{07}}</td><td class="answer"></td><td class="auto" data-key="29">{{29}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="08">{{08}}</td><td class="answer"></td><td class="auto" data-key="30">{{30}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="09">{{09}}</td><td class="answer"></td><td class="auto" data-key="31">{{31}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="10">{{10}}</td><td class="answer"></td><td class="auto" data-key="32">{{32}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="11">{{11}}</td><td class="answer"></td><td class="auto" data-key="33">{{33}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="12">{{12}}</td><td class="answer"></td><td class="auto" data-key="34">{{34}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="13">{{13}}</td><td class="answer"></td><td class="auto" data-key="35">{{35}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="14">{{14}}</td><td class="answer"></td><td class="auto" data-key="36">{{36}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="15">{{15}}</td><td class="answer"></td><th colspan="2" class="group-header">Ⅲグループ</th></tr>
+        <tr><td class="auto" data-key="16">{{16}}</td><td class="answer"></td><td class="auto" data-key="37">{{37}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="17">{{17}}</td><td class="answer"></td><td class="auto" data-key="38">{{38}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="18">{{18}}</td><td class="answer"></td><td class="auto" data-key="39">{{39}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="19">{{19}}</td><td class="answer"></td><td class="auto" data-key="40">{{40}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="20">{{20}}</td><td class="answer"></td><td class="auto" data-key="41">{{41}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="21">{{21}}</td><td class="answer"></td><td class="auto" data-key="42">{{42}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="22">{{22}}</td><td class="answer"></td><td class="auto" data-key="43">{{43}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="23">{{23}}</td><td class="answer"></td><td class="auto" data-key="44">{{44}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="24">{{24}}</td><td class="answer"></td><td class="auto" data-key="45">{{45}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="25">{{25}}</td><td class="answer"></td><td class="auto" data-key="46">{{46}}</td><td class="answer"></td></tr>
+        <tr><td class="auto" data-key="26">{{26}}</td><td class="answer"></td><td class="auto" data-key="47">{{47}}</td><td class="answer"></td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    function parseData(text) {
+      const values = {};
+      for (const rawLine of text.split(/\r?\n/)) {
+        const line = rawLine.trim();
+        if (!line || line.startsWith('#')) continue;
+
+        // title: ... / 01: ... / 01：... / [01] ... に対応
+        let match = line.match(/^\[([^\]]+)\]\s*(.*)$/);
+        if (match) {
+          values[match[1].trim()] = match[2].trim();
+          continue;
+        }
+
+        match = line.match(/^([^:：]+)\s*[:：]\s*(.*)$/);
+        if (match) values[match[1].trim()] = match[2].trim();
+      }
+      return values;
+    }
+
+    function fillSheet(values) {
+      document.querySelectorAll('[data-key]').forEach((element) => {
+        const key = element.dataset.key;
+        if (Object.prototype.hasOwnProperty.call(values, key)) {
+          element.textContent = values[key];
+        } else {
+          element.textContent = '';
+        }
+      });
+    }
+
+    async function loadData() {
+      const status = document.getElementById('status');
+      try {
+        const response = await fetch('data.md', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        fillSheet(parseData(await response.text()));
+        status.textContent = 'data.md を読み込みました';
+      } catch (error) {
+        status.textContent = 'data.mdを読み込めませんでした。GitHub Pages上で確認してください。';
+        console.error(error);
+      }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

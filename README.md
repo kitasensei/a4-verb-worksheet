@@ -1,2 +1,23 @@
-# a4-verb-worksheet
-worksheet
+# A4グループ表
+
+GitHub Pages用の静的ページです。
+
+## ファイル
+
+- `index.html`：A4縦1枚の表と、MD読込処理
+- `data.md`：表に自動入力する文字列
+
+## data.md の書式
+
+```md
+title: 動詞グループ練習
+01: ます形
+02: ない形
+05: 書きます
+```
+
+番号や `title:` は指定位置を決めるために使われ、印刷時には文字列だけが表示されます。
+
+## Pages設定
+
+リポジトリの Settings → Pages で、`main` ブランチのルートを公開してください。
