@@ -1,23 +1,23 @@
-# A4グループ表
+# A4 Verb Worksheet
 
-GitHub Pages用の静的ページです。
+## ファイル構成
 
-## ファイル
+- `index.html`
+- `files.json`
+- `1naikei.md`
+- `2nakattakei.md`
+- `3takei.md`
+- `4tekei.md`
 
-- `index.html`：A4縦1枚の表と、MD読込処理
-- `data.md`：表に自動入力する文字列
+## 教材追加
 
-## data.md の書式
+新しいMDファイルを追加し、`files.json`にも登録します。
 
-```md
-title: 動詞グループ練習
-01: ます形
-02: ない形
-05: 書きます
+```json
+{
+  "file": "5jishokei.md",
+  "label": "辞書形"
+}
 ```
 
-番号や `title:` は指定位置を決めるために使われ、印刷時には文字列だけが表示されます。
-
-## Pages設定
-
-リポジトリの Settings → Pages で、`main` ブランチのルートを公開してください。
+画面ではA4の約50%で表示され、印刷時はA4実寸になります。

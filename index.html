@@ -3,14 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>グループ表</title>
+  <title>動詞活用ワークシート</title>
   <style>
     :root {
       --page-width: 210mm;
       --page-height: 297mm;
-      --page-margin: 8mm;
+      --page-margin-x: 8mm;
+      --page-margin-top: 11mm;
+      --page-margin-bottom: 6mm;
       --border: 0.35mm solid #000;
-      --font: "UDデジタル教科書体 N-B", "UD Digi Kyokasho N-B", "HG教科書体", "BIZ UDPMincho", "Yu Mincho", serif;
+      --font: "UDデジタル教科書体 N-R", "UD Digi Kyokasho N-R",
+              "UDデジタル教科書体 NK-R", "HG教科書体",
+              "BIZ UDPMincho", "Yu Mincho", serif;
+      --preview-scale: 0.5;
     }
 
     * { box-sizing: border-box; }
@@ -21,39 +26,58 @@
       background: #ececec;
       color: #000;
       font-family: var(--font);
-      font-weight: 700;
+      font-weight: 500;
     }
 
-    body { padding: 12px; }
+    body { padding: 14px; }
 
     .toolbar {
-      width: calc(var(--page-width) - (var(--page-margin) * 2));
-      margin: 0 auto 10px;
+      width: calc(var(--page-width) * var(--preview-scale));
+      margin: 0 auto 12px;
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       align-items: center;
       font-family: sans-serif;
       font-weight: 400;
     }
 
+    .toolbar label { font-size: 14px; }
+
+    .toolbar select,
     .toolbar button {
+      min-height: 34px;
       border: 1px solid #777;
       border-radius: 5px;
       background: #fff;
-      padding: 7px 14px;
-      cursor: pointer;
+      padding: 6px 10px;
+      font-size: 14px;
     }
 
-    .status { font-size: 13px; }
+    .toolbar button { cursor: pointer; }
+
+    .status {
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .preview-frame {
+      width: calc(var(--page-width) * var(--preview-scale));
+      height: calc(var(--page-height) * var(--preview-scale));
+      margin: 0 auto;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 1px 8px rgba(0,0,0,.18);
+    }
 
     .page {
       width: var(--page-width);
-      min-height: var(--page-height);
-      margin: 0 auto;
-      padding: var(--page-margin);
+      height: var(--page-height);
+      padding: var(--page-margin-top) var(--page-margin-x) var(--page-margin-bottom);
       background: #fff;
-      box-shadow: 0 1px 8px rgba(0,0,0,.18);
       overflow: hidden;
+      transform: scale(var(--preview-scale));
+      transform-origin: top left;
     }
 
     .sheet-header {
@@ -61,9 +85,10 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: end;
-      padding: 0 1mm 2.2mm;
-      font-size: 5.2mm;
-      line-height: 1;
+      padding: 1.5mm 1mm 2.2mm;
+      font-size: 5.1mm;
+      line-height: 1.15;
+      font-weight: 500;
     }
 
     .title-value {
@@ -71,6 +96,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      padding-top: 1mm;
     }
 
     .name-field {
@@ -93,8 +119,9 @@
       border-collapse: collapse;
       table-layout: fixed;
       border: var(--border);
-      font-size: 4.75mm;
-      line-height: 1.05;
+      font-size: 4.65mm;
+      line-height: 1.08;
+      font-weight: 500;
     }
 
     col.prompt { width: 25%; }
@@ -102,27 +129,24 @@
 
     th, td {
       border: var(--border);
-      height: 9.7mm;
+      height: 9.55mm;
       padding: 0 2.2mm;
       vertical-align: middle;
       overflow: hidden;
     }
 
-    th,
-    .fixed {
+    th, .fixed {
       text-align: center;
-      font-weight: 700;
+      font-weight: 500;
     }
 
-    .group-header { height: 10.5mm; }
+    .group-header { height: 10.2mm; }
 
     .auto {
       text-align: left;
       white-space: nowrap;
-      font-weight: 700;
+      font-weight: 500;
     }
-
-    .answer { background: #fff; }
 
     @page {
       size: A4 portrait;
@@ -130,15 +154,28 @@
     }
 
     @media print {
-      html, body { background: #fff; }
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        background: #fff;
+      }
+
       body { padding: 0; }
       .toolbar { display: none !important; }
+
+      .preview-frame {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        overflow: visible;
+        box-shadow: none;
+      }
+
       .page {
         width: 210mm;
         height: 297mm;
-        min-height: 297mm;
         margin: 0;
-        padding: 8mm;
+        transform: none;
         box-shadow: none;
         page-break-after: avoid;
       }
@@ -146,58 +183,68 @@
   </style>
 </head>
 <body>
-  <div class="toolbar no-print">
-    <button type="button" onclick="window.print()">印刷</button>
-    <span class="status" id="status">data.md を読み込み中…</span>
+  <div class="toolbar">
+    <label for="worksheetSelect">教材：</label>
+    <select id="worksheetSelect" aria-label="教材を選択"></select>
+    <button type="button" id="printButton">印刷</button>
+    <span class="status" id="status">教材一覧を読み込み中…</span>
   </div>
 
-  <main class="page">
-    <header class="sheet-header">
-      <div class="title-value" data-key="title">{{title}}</div>
-      <div class="name-field"><span>氏名</span><span class="name-line" aria-hidden="true"></span></div>
-    </header>
+  <div class="preview-frame">
+    <main class="page">
+      <header class="sheet-header">
+        <div class="title-value" data-key="title"></div>
+        <div class="name-field">
+          <span>氏名</span>
+          <span class="name-line" aria-hidden="true"></span>
+        </div>
+      </header>
 
-    <table aria-label="グループ記入表">
-      <colgroup>
-        <col class="prompt"><col class="answer"><col class="prompt"><col class="answer">
-      </colgroup>
-      <tbody>
-        <tr><th colspan="2" class="group-header">Ⅰグループ</th><th colspan="2" class="group-header">Ⅱグループ</th></tr>
-        <tr><td class="auto" data-key="01">{{01}}</td><td class="auto" data-key="02">{{02}}</td><td class="auto" data-key="03">{{03}}</td><td class="auto" data-key="04">{{04}}</td></tr>
-        <tr><td class="auto" data-key="05">{{05}}</td><td class="answer"></td><td class="auto" data-key="27">{{27}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="06">{{06}}</td><td class="answer"></td><td class="auto" data-key="28">{{28}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="07">{{07}}</td><td class="answer"></td><td class="auto" data-key="29">{{29}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="08">{{08}}</td><td class="answer"></td><td class="auto" data-key="30">{{30}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="09">{{09}}</td><td class="answer"></td><td class="auto" data-key="31">{{31}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="10">{{10}}</td><td class="answer"></td><td class="auto" data-key="32">{{32}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="11">{{11}}</td><td class="answer"></td><td class="auto" data-key="33">{{33}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="12">{{12}}</td><td class="answer"></td><td class="auto" data-key="34">{{34}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="13">{{13}}</td><td class="answer"></td><td class="auto" data-key="35">{{35}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="14">{{14}}</td><td class="answer"></td><td class="auto" data-key="36">{{36}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="15">{{15}}</td><td class="answer"></td><th colspan="2" class="group-header">Ⅲグループ</th></tr>
-        <tr><td class="auto" data-key="16">{{16}}</td><td class="answer"></td><td class="auto" data-key="37">{{37}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="17">{{17}}</td><td class="answer"></td><td class="auto" data-key="38">{{38}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="18">{{18}}</td><td class="answer"></td><td class="auto" data-key="39">{{39}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="19">{{19}}</td><td class="answer"></td><td class="auto" data-key="40">{{40}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="20">{{20}}</td><td class="answer"></td><td class="auto" data-key="41">{{41}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="21">{{21}}</td><td class="answer"></td><td class="auto" data-key="42">{{42}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="22">{{22}}</td><td class="answer"></td><td class="auto" data-key="43">{{43}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="23">{{23}}</td><td class="answer"></td><td class="auto" data-key="44">{{44}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="24">{{24}}</td><td class="answer"></td><td class="auto" data-key="45">{{45}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="25">{{25}}</td><td class="answer"></td><td class="auto" data-key="46">{{46}}</td><td class="answer"></td></tr>
-        <tr><td class="auto" data-key="26">{{26}}</td><td class="answer"></td><td class="auto" data-key="47">{{47}}</td><td class="answer"></td></tr>
-      </tbody>
-    </table>
-  </main>
+      <table aria-label="動詞グループ記入表">
+        <colgroup>
+          <col class="prompt"><col class="answer">
+          <col class="prompt"><col class="answer">
+        </colgroup>
+        <tbody>
+          <tr><th colspan="2" class="group-header">Ⅰグループ</th><th colspan="2" class="group-header">Ⅱグループ</th></tr>
+          <tr><td class="auto" data-key="01"></td><td class="auto" data-key="02"></td><td class="auto" data-key="03"></td><td class="auto" data-key="04"></td></tr>
+          <tr><td class="auto" data-key="05"></td><td></td><td class="auto" data-key="27"></td><td></td></tr>
+          <tr><td class="auto" data-key="06"></td><td></td><td class="auto" data-key="28"></td><td></td></tr>
+          <tr><td class="auto" data-key="07"></td><td></td><td class="auto" data-key="29"></td><td></td></tr>
+          <tr><td class="auto" data-key="08"></td><td></td><td class="auto" data-key="30"></td><td></td></tr>
+          <tr><td class="auto" data-key="09"></td><td></td><td class="auto" data-key="31"></td><td></td></tr>
+          <tr><td class="auto" data-key="10"></td><td></td><td class="auto" data-key="32"></td><td></td></tr>
+          <tr><td class="auto" data-key="11"></td><td></td><td class="auto" data-key="33"></td><td></td></tr>
+          <tr><td class="auto" data-key="12"></td><td></td><td class="auto" data-key="34"></td><td></td></tr>
+          <tr><td class="auto" data-key="13"></td><td></td><td class="auto" data-key="35"></td><td></td></tr>
+          <tr><td class="auto" data-key="14"></td><td></td><td class="auto" data-key="36"></td><td></td></tr>
+          <tr><td class="auto" data-key="15"></td><td></td><th colspan="2" class="group-header">Ⅲグループ</th></tr>
+          <tr><td class="auto" data-key="16"></td><td></td><td class="auto" data-key="37"></td><td></td></tr>
+          <tr><td class="auto" data-key="17"></td><td></td><td class="auto" data-key="38"></td><td></td></tr>
+          <tr><td class="auto" data-key="18"></td><td></td><td class="auto" data-key="39"></td><td></td></tr>
+          <tr><td class="auto" data-key="19"></td><td></td><td class="auto" data-key="40"></td><td></td></tr>
+          <tr><td class="auto" data-key="20"></td><td></td><td class="auto" data-key="41"></td><td></td></tr>
+          <tr><td class="auto" data-key="21"></td><td></td><td class="auto" data-key="42"></td><td></td></tr>
+          <tr><td class="auto" data-key="22"></td><td></td><td class="auto" data-key="43"></td><td></td></tr>
+          <tr><td class="auto" data-key="23"></td><td></td><td class="auto" data-key="44"></td><td></td></tr>
+          <tr><td class="auto" data-key="24"></td><td></td><td class="auto" data-key="45"></td><td></td></tr>
+          <tr><td class="auto" data-key="25"></td><td></td><td class="auto" data-key="46"></td><td></td></tr>
+          <tr><td class="auto" data-key="26"></td><td></td><td class="auto" data-key="47"></td><td></td></tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
 
   <script>
+    const select = document.getElementById('worksheetSelect');
+    const status = document.getElementById('status');
+
     function parseData(text) {
       const values = {};
       for (const rawLine of text.split(/\r?\n/)) {
         const line = rawLine.trim();
         if (!line || line.startsWith('#')) continue;
 
-        // title: ... / 01: ... / 01：... / [01] ... に対応
         let match = line.match(/^\[([^\]]+)\]\s*(.*)$/);
         if (match) {
           values[match[1].trim()] = match[2].trim();
@@ -213,28 +260,70 @@
     function fillSheet(values) {
       document.querySelectorAll('[data-key]').forEach((element) => {
         const key = element.dataset.key;
-        if (Object.prototype.hasOwnProperty.call(values, key)) {
-          element.textContent = values[key];
-        } else {
-          element.textContent = '';
-        }
+        element.textContent = Object.prototype.hasOwnProperty.call(values, key)
+          ? values[key]
+          : '';
       });
     }
 
-    async function loadData() {
-      const status = document.getElementById('status');
+    async function loadWorksheet(filename, label) {
+      status.textContent = `${label} を読み込み中…`;
       try {
-        const response = await fetch('data.md', { cache: 'no-store' });
+        const response = await fetch(filename, { cache: 'no-store' });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        fillSheet(parseData(await response.text()));
-        status.textContent = 'data.md を読み込みました';
+        const values = parseData(await response.text());
+        fillSheet(values);
+        document.title = values.title || label;
+        status.textContent = `${label} を読み込みました`;
       } catch (error) {
-        status.textContent = 'data.mdを読み込めませんでした。GitHub Pages上で確認してください。';
+        fillSheet({});
+        status.textContent = `${filename} を読み込めませんでした`;
         console.error(error);
       }
     }
 
-    loadData();
+    async function loadWorksheetList() {
+      try {
+        const response = await fetch('files.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const files = await response.json();
+
+        if (!Array.isArray(files) || files.length === 0) {
+          throw new Error('files.json に教材が登録されていません');
+        }
+
+        select.replaceChildren();
+
+        files.forEach((item) => {
+          const option = document.createElement('option');
+          option.value = item.file;
+          option.textContent = item.label;
+          select.appendChild(option);
+        });
+
+        const requested = new URLSearchParams(location.search).get('file');
+        const initial = files.find((item) => item.file === requested) || files[0];
+
+        select.value = initial.file;
+        await loadWorksheet(initial.file, initial.label);
+      } catch (error) {
+        status.textContent = 'files.json を読み込めませんでした';
+        console.error(error);
+      }
+    }
+
+    select.addEventListener('change', async () => {
+      const option = select.options[select.selectedIndex];
+      const url = new URL(location.href);
+      url.searchParams.set('file', option.value);
+      history.replaceState(null, '', url);
+      await loadWorksheet(option.value, option.textContent);
+    });
+
+    document.getElementById('printButton')
+      .addEventListener('click', () => window.print());
+
+    loadWorksheetList();
   </script>
 </body>
 </html>
