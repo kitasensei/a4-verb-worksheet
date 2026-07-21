@@ -1966,50 +1966,50 @@ honorific_reading: こられる
 id: 041
 group: 3
 
-nai: 勉強しない
-nai_reading: べんきょうしない
+nai: コピーしない
+nai_reading: コピーしない
 
-nakatta: 勉強しなかった
-nakatta_reading: べんきょうしなかった
+nakatta: コピーしなかった
+nakatta_reading: コピーしなかった
 
-masu: 勉強します
-masu_reading: べんきょうします
+masu: コピーします
+masu_reading: コピーします
 
-dictionary: 勉強する
-dictionary_reading: べんきょうする
+dictionary: コピーする
+dictionary_reading: コピーする
 
-ba: 勉強すれば
-ba_reading: べんきょうすれば
+ba: コピーすれば
+ba_reading: コピーすれば
 
-negative_ba: 勉強しなければ
-negative_ba_reading: べんきょうしなければ
+negative_ba: コピーしなければ
+negative_ba_reading: コピーしなければ
 
-volitional: 勉強しよう
-volitional_reading: べんきょうしよう
+volitional: コピーしよう
+volitional_reading: コピーしよう
 
-te: 勉強して
-te_reading: べんきょうして
+te: コピーして
+te_reading: コピーして
 
-ta: 勉強した
-ta_reading: べんきょうした
+ta: コピーした
+ta_reading: コピーした
 
-imperative: 勉強しろ
-imperative_reading: べんきょうしろ
+imperative: コピーしろ
+imperative_reading: コピーしろ
 
-prohibitive: 勉強するな
-prohibitive_reading: べんきょうするな
+prohibitive: コピーするな
+prohibitive_reading: コピーするな
 
-potential: 勉強できる
-potential_reading: べんきょうできる
+potential:コピーできる
+potential_reading: コピーできる
 
-passive: 勉強される
-passive_reading: べんきょうされる
+passive: コピーされる
+passive_reading: コピーされる
 
-causative: 勉強させる
-causative_reading: べんきょうさせる
+causative: コピーさせる
+causative_reading: コピーさせる
 
-honorific: 勉強される
-honorific_reading: べんきょうされる
+honorific: コピーされる
+honorific_reading: コピーされる
 ---
 
 id: 042
