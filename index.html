@@ -158,7 +158,10 @@
       font-weight: 500;
     }
 
-    .group-header { height: 9.9mm; }
+    .group-header {
+      height: 9.9mm;
+      background: #eeeeee;
+    }
 
     .example-row td {
       background: #fafafa;
@@ -392,21 +395,21 @@
       h3.textContent = "Ⅲグループ";
       group3Header.appendChild(h3);
       group3Header.appendChild(makeCell("", "blank"));
-      group3Header.lastChild.colSpan = 2;
+      group3Header.appendChild(makeCell("", "blank"));
       worksheetBody.appendChild(group3Header);
 
       for (const verb of group3) {
         const tr = document.createElement("tr");
         tr.appendChild(makeCell(displayValue(verb, questionKey)));
         tr.appendChild(makeCell(showAnswers.checked ? displayValue(verb, answerKey) : "", "answer-cell"));
-        const blank = makeCell("", "blank");
-        blank.colSpan = 2;
-        tr.appendChild(blank);
+        tr.appendChild(makeCell("", "blank"));
+        tr.appendChild(makeCell("", "blank"));
         worksheetBody.appendChild(tr);
       }
     }
 
     function refreshAnswersOnly() {
+      const questionKey = questionForm.value;
       const answerKey = answerForm.value;
       const group1 = orderedGroup(1, "書く");
       const group2 = orderedGroup(2, "食べる");
